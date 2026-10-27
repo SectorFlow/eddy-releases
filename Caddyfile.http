@@ -1,0 +1,4 @@
+# Plain HTTP on port 80 for any host name, used with --no-tls for CI and LAN testing.
+:80 {
+	reverse_proxy app:3000
+}

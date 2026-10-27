@@ -1,0 +1,26 @@
+# The bundled Postgres. Used only when .env sets COMPOSE_FILE=compose.yml:compose.db.yml.
+# No port is published: only the app reaches the database, over the compose network.
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: eddy
+      POSTGRES_DB: eddy
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set for the bundled database}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eddy -d eddy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

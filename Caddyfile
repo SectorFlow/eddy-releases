@@ -1,0 +1,8 @@
+# Serves the app over HTTPS. Caddy gets and renews the certificate for DOMAIN from Let's Encrypt.
+{
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	reverse_proxy app:3000
+}
