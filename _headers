@@ -1,0 +1,16 @@
+/*.sh
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300
+/SHA256SUMS
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300
+/releases.json
+  Cache-Control: public, max-age=300
+/env.template
+  Content-Type: text/plain; charset=utf-8
+/Caddyfile
+  Content-Type: text/plain; charset=utf-8
+/Caddyfile.http
+  Content-Type: text/plain; charset=utf-8
+/*.yml
+  Content-Type: text/plain; charset=utf-8
