@@ -1,0 +1,12 @@
+// Cloudflare Workers static assets: serve this repository's root at get.eddyline.app.
+// _headers and _redirects are read by the platform; .assetsignore keeps the rest of the
+// repository out of the published files.
+{
+  "name": "eddy-releases",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./",
+    "html_handling": "none",
+    "not_found_handling": "none"
+  }
+}
