@@ -301,7 +301,9 @@ check_external_db() (
   # The server version number, whether citext exists or the role can create it (a trusted
   # extension needs CREATE on the database), the number of tables and views outside
   # the system schemas, and whether this is an earlier install: the migrations table, which any
-  # Drizzle app has, together with this product's own users and issues tables.
+  # Drizzle app has, together with this product's own users and issues tables. Both reads go
+  # through the catalogs, never to_regclass, because to_regclass needs USAGE on the schema and a
+  # role that cannot see another app's schema would turn the check into a permission error.
   # shellcheck disable=SC2016 # $DATABASE_URL and $@ expand inside the container
   out=$(DATABASE_URL="$DB_URL_NOPASS" PGPASSWORD="$DB_PASSWORD" docker run --rm \
     -e DATABASE_URL -e PGPASSWORD -e PGCONNECT_TIMEOUT=10 \
@@ -310,7 +312,7 @@ check_external_db() (
     -c "show server_version_num" \
     -c "select exists (select 1 from pg_extension where extname = 'citext') or (exists (select 1 from pg_available_extensions where name = 'citext') and has_database_privilege(current_database(), 'CREATE'))" \
     -c "select count(*) from pg_class c join pg_namespace n on n.oid = c.relnamespace where c.relkind in ('r', 'p', 'v', 'm', 'f') and n.nspname not in ('pg_catalog', 'information_schema') and n.nspname not like 'pg\\_%'" \
-    -c "select to_regclass('drizzle.__drizzle_migrations') is not null and to_regclass('public.users') is not null and to_regclass('public.issues') is not null" \
+    -c "select exists (select 1 from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'drizzle' and c.relname = '__drizzle_migrations') and exists (select 1 from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relname = 'users') and exists (select 1 from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'public' and c.relname = 'issues')" \
     2>"$err") || {
     redact_db_errors "$url" "$err"
     rm -f "$err"

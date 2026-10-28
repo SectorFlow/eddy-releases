@@ -1,8 +1,12 @@
 {
-  "version": "1.0.0",
-  "date": "2026-10-27",
-  "notes": "https://github.com/SectorFlow/eddy/releases/tag/v1.0.0",
+  "version": "1.0.1",
+  "date": "2026-10-28",
+  "notes": "https://github.com/SectorFlow/eddy/releases/tag/v1.0.1",
   "releases": [
+    {
+      "version": "1.0.1",
+      "date": "2026-10-28"
+    },
     {
       "version": "1.0.0",
       "date": "2026-10-27"
